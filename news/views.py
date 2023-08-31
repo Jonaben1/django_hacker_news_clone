@@ -4,7 +4,6 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 from .forms import PostForm
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 
 
@@ -121,19 +120,19 @@ def signup(request):
 def signin(request):
     if request.user.is_authenticated:
         return redirect('/')
-     
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username =username, password = password)
- 
+
         if user is not None:
             login(request,user)
             return redirect('/')
         else:
             form = AuthenticationForm()
             return render(request,'signin.html',{'form':form})
-     
+
     else:
         form = AuthenticationForm()
         return render(request, 'signin.html', {'form':form})
@@ -173,8 +172,8 @@ def CommentListView(request,id):
     post = Post.objects.get(id =id)
     post.count_votes()
     post.count_comments()
- 
-    comments = []    
+
+    comments = []
     def func(i,parent):
         children = Comment.objects.filter(post =post).filter(identifier =i).filter(parent=parent)
         for child in children:
